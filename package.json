@@ -1,0 +1,38 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@huggingface/inference": "^4.13.14",
+    "@prisma/client": "^4.16.2",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "next": "16.1.6",
+    "node-cron": "^4.2.1",
+    "node-fetch": "^3.3.2",
+    "postcss": "^8.5.8",
+    "prisma": "^4.16.2",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "recharts": "^3.8.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/recharts": "^1.8.29",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4.2.1",
+    "typescript": "^5"
+  }
+}

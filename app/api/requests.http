@@ -1,0 +1,231 @@
+### Register
+POST http://localhost:3000/api/users/register
+Content-Type: application/json
+
+{
+    "email": "sabdullah@mail.com",
+    "username": "sabdullah",
+    "password": "123abc"
+}
+ 
+### Login
+POST http://localhost:3000/api/users/login
+Content-Type: application/json
+
+{
+    "username": "sabdullah",
+    "password": "123abc"
+}
+
+### create thread
+POST http://localhost:3000/api/threads 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzQ0NjUwMzQsImV4cCI6MTc3NDQ2NjgzNH0.32KgQkIabLRCcPevpoN_TrXSnnE_Pb36rMeBfwg0I4Q
+
+{
+    "title": "Match discussion",
+    "content": "who will win",
+    "tags": ["match","new"],
+    "teamId": 2
+}
+
+### edit thread
+PATCH http://localhost:3000/api/threads/threadId/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI4Mzc2NzAsImV4cCI6MTc3MjgzOTQ3MH0.h-82BXOisgGGosNlRToNsWmlfEoUaRfy4zEs9hV3wuc
+Content-Type: application/json
+
+{
+    "isOpen": false
+}
+
+### delete thread
+DELETE http://localhost:3000/api/threads/threadId/25
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTY1MzksImV4cCI6MTc3Mjc1ODMzOX0.4DZ3iaEYjmh51bDFkX-rkKhOfdJdFnf1hFXTPRcVK4Y
+Content-Type: application/json
+
+### create post
+POST http://localhost:3000/api/threads/threadId/5/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzQ0ODEwMzAsImV4cCI6MTc3NDQ4MjgzMH0.Vw34-1evb0iC0LYVpgV3F11QBa0tf6We2PjDjW4abr8
+Content-Type: application/json
+
+{
+    "content": "Whos excited for the new season??"
+}
+
+### get my threads
+GET http://localhost:3000/api/users/me/threads
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI4Mzc2NzAsImV4cCI6MTc3MjgzOTQ3MH0.h-82BXOisgGGosNlRToNsWmlfEoUaRfy4zEs9hV3wuc
+
+### get my posts
+GET http://localhost:3000/api/users/me/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTU3NzIsImV4cCI6MTc3Mjc1NzU3Mn0.pZvywtPrJeYl7o3_OHV_Qz0SnzdNOCSuuvyBgo7URe4
+
+### get my replies
+GET http://localhost:3000/api/users/me/replies
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTU3NzIsImV4cCI6MTc3Mjc1NzU3Mn0.pZvywtPrJeYl7o3_OHV_Qz0SnzdNOCSuuvyBgo7URe4
+
+### get my polls
+GET http://localhost:3000/api/users/me/polls
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI4Mzc2NzAsImV4cCI6MTc3MjgzOTQ3MH0.h-82BXOisgGGosNlRToNsWmlfEoUaRfy4zEs9hV3wuc
+
+### edit post
+PATCH http://localhost:3000/api/posts/postId/8/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTcxNzEsImV4cCI6MTc3Mjc1ODk3MX0.DoWzDNebjI3by5DCJ31PMpIE1QTSAg85TKFIF7hRoaI
+
+{
+   "content": "I am voting for Telstar 1963 to win because they worked hard"
+}
+
+### delete post
+DELETE http://localhost:3000/api/posts/postId/6
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTcxNzEsImV4cCI6MTc3Mjc1ODk3MX0.DoWzDNebjI3by5DCJ31PMpIE1QTSAg85TKFIF7hRoaI
+
+### edit post 
+PATCH http://localhost:3000/api/posts/postId/2/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3Mzc5OTMsImV4cCI6MTc3MjczODg5M30.XL4Q-DrTIL1JeNgtpWArfvLpOEP1S8IO0cSwqYxz8j0
+
+{
+   "content": "hello world, im new here, lets talk!!"
+}
+
+### edit post 
+PATCH http://localhost:3000/api/posts/postId/7/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3Mzc5OTMsImV4cCI6MTc3MjczODg5M30.XL4Q-DrTIL1JeNgtpWArfvLpOEP1S8IO0cSwqYxz8j0
+
+{
+   "content": "general content about NFL matches"
+}
+
+### delete post
+DELETE http://localhost:3000/api/posts/postId/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3Mzc5OTMsImV4cCI6MTc3MjczODg5M30.XL4Q-DrTIL1JeNgtpWArfvLpOEP1S8IO0cSwqYxz8j0
+
+### create reply
+POST http://localhost:3000/api/posts/postId/8/replies
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTcxNzEsImV4cCI6MTc3Mjc1ODk3MX0.DoWzDNebjI3by5DCJ31PMpIE1QTSAg85TKFIF7hRoaI
+
+{
+    "content": "I agree they did put a lot of effort in!"
+}
+
+### create reply
+POST http://localhost:3000/api/posts/postId/7/replies
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3MzkzNTIsImV4cCI6MTc3Mjc0MDI1Mn0.C656M5WueSbUm835DGyCKM86k89aIMuVjUVHif3UrYY
+
+{
+    "content": "Also its a new year for all teams"
+}
+
+### edit reply
+PATCH http://localhost:3000/api/posts/postId/7/replies/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTcxNzEsImV4cCI6MTc3Mjc1ODk3MX0.DoWzDNebjI3by5DCJ31PMpIE1QTSAg85TKFIF7hRoaI
+
+{
+    "content": "Also its a new year for all teams so they start fresh and motivated. I am excited!"
+}
+
+### create reply
+POST http://localhost:3000/api/posts/postId/9/replies
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTcxNzEsImV4cCI6MTc3Mjc1ODk3MX0.DoWzDNebjI3by5DCJ31PMpIE1QTSAg85TKFIF7hRoaI
+
+{
+    "content": "I think Team FC will win"
+}
+
+### edit reply 1
+PATCH http://localhost:3000/api/posts/postId/9/replies/4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTcxNzEsImV4cCI6MTc3Mjc1ODk3MX0.DoWzDNebjI3by5DCJ31PMpIE1QTSAg85TKFIF7hRoaI
+
+{
+    "content": "I think Team FC will win because they worked hard"
+}
+
+### edit reply 2
+PATCH http://localhost:3000/api/posts/postId/9/replies/4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTcxNzEsImV4cCI6MTc3Mjc1ODk3MX0.DoWzDNebjI3by5DCJ31PMpIE1QTSAg85TKFIF7hRoaI
+
+{
+    "content": "Actually I am confused"
+}
+
+### delete reply
+DELETE http://localhost:3000/api/posts/postId/7/replies/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTcxNzEsImV4cCI6MTc3Mjc1ODk3MX0.DoWzDNebjI3by5DCJ31PMpIE1QTSAg85TKFIF7hRoaI
+
+### create poll 1
+POST http://localhost:3000/api/polls
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzMyNDQ1MjAsImV4cCI6MTc3MzI0NjMyMH0.wd_1Q0q6Vpn4N-m-pNuerKyg8gdnm2zv_uVQhBxkPg0
+Content-Type: application/json
+
+{
+    "threadId": 1,
+    "question": "Who will be man of the match",
+    "deadline": "2026-06-07T15:00:00.795Z",
+    "options": ["Messi", "Mohammed Saleh", "Ronaldo"]
+}
+ 
+### create poll 2
+POST http://localhost:3000/api/polls
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NDc3ODEsImV4cCI6MTc3Mjc0OTU4MX0.U9SpvO_OgkqWvUFoep3f0JmiL_rsYzOz_9dTQRRKq40
+Content-Type: application/json
+
+{
+    "threadId": 1,
+    "question": "By how many goals will FC win by?",
+    "deadline": "2026-07-07T15:00:00.795Z",
+    "options": ["1", "2", "3", "3+"]
+}
+ 
+### edit poll 2
+PATCH http://localhost:3000/api/polls/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NDc5MDEsImV4cCI6MTc3Mjc0OTcwMX0.XHt1lbo32Rn_Xn6ggzQKOP3852nVMK5zhD_ABEpZEEQ
+Content-Type: application/json
+
+{
+    "options": ["1", "2", "3", "3", "none"]
+}
+
+### edit poll 1
+PATCH http://localhost:3000/api/polls/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTcxNzEsImV4cCI6MTc3Mjc1ODk3MX0.DoWzDNebjI3by5DCJ31PMpIE1QTSAg85TKFIF7hRoaI
+Content-Type: application/json
+
+{
+    "options": ["Messi", "Mohammed Saleh", "Ronaldo", "all", "none"]
+}
+
+### delete poll
+DELETE http://localhost:3000/api/polls/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTcxNzEsImV4cCI6MTc3Mjc1ODk3MX0.DoWzDNebjI3by5DCJ31PMpIE1QTSAg85TKFIF7hRoaI
+
+
+### vote in poll 1
+PATCH http://localhost:3000/api/polls/2/vote
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzMyNDQ1MjAsImV4cCI6MTc3MzI0NjMyMH0.wd_1Q0q6Vpn4N-m-pNuerKyg8gdnm2zv_uVQhBxkPg0
+
+{
+    "option": "Messi"
+}
+
+### vote in poll 2
+PATCH http://localhost:3000/api/polls/2/vote
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FiZHVsbGFoIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NzI3NTA3NjMsImV4cCI6MTc3Mjc1MjU2M30.0Y_5g4n3cGX_LWtULMMfZCKnam2usRziIlDw1ckDfw8
+Content-Type: application/json
+
+{
+    "option": "2"
+}
+
+### poll results 
+GET http://localhost:3000/api/polls/5/results
+
+
+
