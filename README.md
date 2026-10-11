@@ -20,10 +20,11 @@ An interactive platform for sports fans to follow leagues, matches, and communit
 ### Backend
 - Node.js
 - Next.js
+- JWT Authentication
 
 ### Database
 - Prisma
-- SQlite
+- PostgreSQL
   
 ### AI & Machine Learning
 - Hugging face
