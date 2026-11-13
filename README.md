@@ -1,10 +1,10 @@
 # NFL SportsDeck: AI-Powered Sports Community Platform
 
-## 📖 Description
+## Description
 
 An interactive platform for sports fans to follow leagues, matches, and community discussions in real time. The application combines modern web technologies with AI-powered features to deliver personalized insights, multilingual accessibility, and enhanced fan engagement.
 
-## ✨ Features
+## Features
 
 - **Sports Community**: Browse leagues, games, and discussions while engaging with other sports fans through user-generated comments.
 - **Sentiment Analysis**: Analyze fan discussions using a pretrained NLP model to classify comments as positive, negative, or neutral.
@@ -17,7 +17,16 @@ An interactive platform for sports fans to follow leagues, matches, and communit
 - **Search & Filtering**: Find leagues, games, teams, and community discussions.
 - **Responsive UI**: Deliver an accessible experience across desktop and mobile devices.
 
-## 	🛠️ Tech Stack
+## Live Demo
+
+Try the live application below!
+
+**Note:** Some AI-powered features may be temporarily unavailable because of changes to Hugging Face's free-tier model usage. Additionally, fetching external API data may be slower depending on third-party API response times.
+
+[**NFL SportsDeck – Live Application**](https://nfl-sports-deck-ai-powered-communit.vercel.app/)
+
+
+## 	Tech Stack
 
 ### Frontend
 - Next.js
@@ -48,21 +57,21 @@ An interactive platform for sports fans to follow leagues, matches, and communit
 - Vercel
 - Git & GitLab
 
-## 🌟 Key Highlights
+## Key Highlights
 - Developed a full-stack sports community platform integrating social engagement with AI-powered NLP capabilities.
 - Integrated pretrained Hugging Face models for sentiment classification, multilingual translation, and automated text summarization.
 - Implemented RAG workflows to generate context-aware responses grounded in retrieved community content.
 - Designed RESTful backend services and relational database models using PostgreSQL and Prisma.
 - Built personalized content delivery features to improve fan engagement through automated summaries and daily digests.
 
-## 🧪 Testing & Quality Assurance
+## Testing & Quality Assurance
 - Validate REST API endpoints and backend functionality.
 - Test authentication and authorization workflows.
 - Verify AI model inference and NLP pipeline outputs.
 - Test responsive layouts across desktop and mobile devices.
 - Handle API failures and unexpected model responses.
 
-## 🔮 Future Improvements
+## Future Improvements
 - Real-time game updates and notifications using WebSockets.
 - Enhanced RAG pipelines with vector embeddings and semantic search.
 - More advanced personalization based on user interests and engagement.
