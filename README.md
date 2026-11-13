@@ -13,6 +13,7 @@ An interactive platform for sports fans to follow leagues, matches, and communit
 - **AI-Powered Summaries**: Generate concise summaries and personalized daily digests of sports discussions and game-related content.
 - **Comment Moderation**: Identify potentially inappropriate or flagged comments using NLP-based classification.
 - **Authentication & Profiles**: Support secure user authentication and profile management.
+- **External Login**: Sign in with Google or GitHub using OAuth.
 - **Search & Filtering**: Find leagues, games, teams, and community discussions.
 - **Responsive UI**: Deliver an accessible experience across desktop and mobile devices.
 
