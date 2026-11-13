@@ -1139,6 +1139,7 @@ export default function SingleThreadPage(){
     const [reportPostId, setReportPostId] = useState<number | null>(null);
     const [editPost, setEditPost] = useState<Post | null>(null);
     const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+    const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
     const [historyPost, setHistoryPost] = useState<Post | null>(null);
     const [polls, setPolls] = useState<Poll[]>([]);
     const [activeTab, setActiveTab] = useState<'posts' | 'polls'>('posts');
@@ -1273,10 +1274,11 @@ export default function SingleThreadPage(){
 
     useEffect(() => {
         const fetchCurrentUser = async () => {
-            const res = await fetch('/api/users/profile/view');
+            const res = await fetch('/api/users/me');
             if (res.ok) {
                 const data = await res.json();
-                setCurrentUserId(data.id);
+                setCurrentUserId(data.userId);
+                setCurrentUserRole(data.role);
             }
         };
         fetchCurrentUser();
@@ -1324,6 +1326,11 @@ export default function SingleThreadPage(){
     if (!thread) return <PageMessage>Thread not found.</PageMessage>;
 
     const { date, time } = format_date(thread.createdAt);
+    const isAdmin = currentUserRole === "ADMIN";
+    const canManageThread =
+        currentUserId !== null &&
+        (thread.userid === currentUserId || isAdmin) &&
+        (thread.isOpen || isAdmin);
 
     return (
     <div className="relative min-h-screen text-[var(--text-primary)]">
@@ -1359,18 +1366,22 @@ export default function SingleThreadPage(){
             </div>
 
             <div className="flex gap-2">
-              <button
-                onClick={() => setShowEdit(true)}
-                className="px-4 py-2 rounded-lg bg-[#066400] hover:bg-[#008000] text-white font-semibold"
-              >
-                Edit
-              </button>
-              <button
-                onClick={handleDelete}
-                className="px-4 py-2 rounded-lg bg-[#D50A0A] hover:bg-[#950606] text-white font-semibold"
-              >
-                Delete
-              </button>
+              {canManageThread && (
+                <>
+                  <button
+                    onClick={() => setShowEdit(true)}
+                    className="px-4 py-2 rounded-lg bg-[#066400] hover:bg-[#008000] text-white font-semibold"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    className="px-4 py-2 rounded-lg bg-[#D50A0A] hover:bg-[#950606] text-white font-semibold"
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
               <button
                 onClick={() => setShowReport(true)}
                 className="px-4 py-2 rounded-lg bg-[#444444] hover:bg-[#333333] text-white font-semibold"

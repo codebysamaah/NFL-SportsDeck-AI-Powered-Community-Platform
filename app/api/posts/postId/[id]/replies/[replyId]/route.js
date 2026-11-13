@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
-import { checkContent } from "@/utils/flagContent";
+// import { checkContent } from "@/utils/flagContent";
 
 // Get reply with replyId
 export async function GET(request, context){
@@ -95,13 +95,12 @@ export async function PATCH(request, context){
                 where: { replyId: replyId, isAIGenerated: true }
             });
         }
-        const ai_analysis = await checkContent(content);
-        aiScore = ai_analysis.find(item => item.label === "toxic").score;
-        if (aiScore > 0.8) {
-            aiVerdict = "Inappropriate Content";
-        } else {
-            aiVerdict = "CLEAN";
-        }
+        // Temporarily disabled while Hugging Face moderation is unavailable.
+        // const ai_analysis = await checkContent(content);
+        // aiScore = ai_analysis.find(item => item.label === "toxic").score;
+        // aiVerdict = aiScore > 0.8 ? "Inappropriate Content" : "CLEAN";
+        aiScore = 0;
+        aiVerdict = "UNMODERATED";
     }
 
     await prisma.replyVersion.create({
@@ -121,18 +120,17 @@ export async function PATCH(request, context){
         }
     });
 
-    if (aiScore > 0.8) {
-        await prisma.report.create({
-            data: {
-                replyId: reply.id,
-                isAIGenerated: true,
-                reason: "AI flagged as inappropriate content",
-                aiVerdict: aiVerdict,
-                aiScore: aiScore
-            }
-        });
-    }
-
+    // if (aiScore > 0.8) {
+    //     await prisma.report.create({
+    //         data: {
+    //             replyId: reply.id,
+    //             isAIGenerated: true,
+    //             reason: "AI flagged as inappropriate content",
+    //             aiVerdict: aiVerdict,
+    //             aiScore: aiScore
+    //         }
+    //     });
+    // }
     return NextResponse.json(updated_reply);
 }
 

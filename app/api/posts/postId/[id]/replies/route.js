@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/prisma/db";
 import jwt from "jsonwebtoken";
-import { checkContent } from "@/utils/flagContent";
+// import { checkContent } from "@/utils/flagContent";
 
 // Get replies for postId
 export async function GET(request, context){
@@ -80,9 +80,12 @@ export async function POST(request, context){
         return NextResponse.json({ error: "Discussion thread is closed, cannot reply to post" }, { status: 400 });
     }
 
-    const ai_analysis = await checkContent(content);
-    const aiScore = ai_analysis.find(item => item.label === "toxic").score;
-    const aiVerdict = aiScore > 0.8 ? "Inappropriate Content" : "CLEAN";
+    // Temporarily disabled while Hugging Face moderation is unavailable.
+    // const ai_analysis = await checkContent(content);
+    // const aiScore = ai_analysis.find(item => item.label === "toxic").score;
+    // const aiVerdict = aiScore > 0.8 ? "Inappropriate Content" : "CLEAN";
+    const aiScore = 0;
+    const aiVerdict = "UNMODERATED";
 
     const reply = await prisma.reply.create({
         data: {
@@ -97,16 +100,16 @@ export async function POST(request, context){
         }
     });
 
-    if (aiScore > 0.8) {
-        await prisma.report.create({
-            data: {
-                replyId: reply.id,
-                isAIGenerated: true,
-                reason: "AI flagged as inappropriate content",
-                aiVerdict: aiVerdict,
-                aiScore: aiScore
-            }
-        });
-    }
+    // if (aiScore > 0.8) {
+    //     await prisma.report.create({
+    //         data: {
+    //             replyId: reply.id,
+    //             isAIGenerated: true,
+    //             reason: "AI flagged as inappropriate content",
+    //             aiVerdict: aiVerdict,
+    //             aiScore: aiScore
+    //         }
+    //     });
+    // }
     return NextResponse.json(reply);
 }

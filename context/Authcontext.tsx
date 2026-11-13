@@ -11,29 +11,48 @@ type AuthUser = {
 type AuthContextType = {
   user: AuthUser
   loading: boolean
-  refresh: () => void
+  refresh: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  refresh: () => {}
+  refresh: async () => {}
 })
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser>(null)
   const [loading, setLoading] = useState(true)
 
-  const fetchUser = () => {
-    fetch('/api/users/me')
-      .then(res => res.ok ? res.json() : null)
-      .then(data => setUser(data))
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false))
+  const fetchUser = async () => {
+    try {
+      const res = await fetch('/api/users/me')
+      setUser(res.ok ? await res.json() : null)
+    } catch {
+      setUser(null)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
-    fetchUser()
+    let active = true
+
+    fetch('/api/users/me')
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (active) setUser(data)
+      })
+      .catch(() => {
+        if (active) setUser(null)
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+
+    return () => {
+      active = false
+    }
   }, []) // only runs once on mount
 
   return (

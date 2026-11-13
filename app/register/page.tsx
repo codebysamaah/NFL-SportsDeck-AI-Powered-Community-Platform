@@ -44,12 +44,19 @@ export default function LoginPage() {
     }
 
     return (
-    <div className = "relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div className = "relative isolate min-h-screen flex items-center justify-center overflow-hidden">
 
-        {/* Background Football Video */}
-        <video autoPlay loop muted playsInline className="fixed inset-0 w-full h-full object-cover -z-10">
-            <source src="/videos/football.mp4" type="video/mp4" />
-        </video>
+        {/* Background Football Image */}
+        <div className="fixed inset-0 -z-10">
+            <Image
+                src="/images/details-ball-sport.jpg"
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+            />
+        </div>
 
         {/* Blurred */}
 

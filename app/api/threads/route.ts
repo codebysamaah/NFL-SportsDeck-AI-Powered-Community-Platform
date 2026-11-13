@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { checkContent } from "@/utils/flagContent";
+// import { checkContent } from "@/utils/flagContent";
 import { verifyToken } from "@/utils/auth";
 
 // Define the where clause type
@@ -98,25 +98,28 @@ export async function POST(request: NextRequest) {
         data: { title, teamId: teamId ?? null, userid: userId }
     });
 
-    const ai_analysis = await checkContent(content);
-    const aiScore: number = ai_analysis.find((item: { label: string; score: number }) => item.label === "toxic")?.score ?? 0;
-    const aiVerdict: string = aiScore > 0.8 ? "Inappropriate Content" : "CLEAN";
+    // Temporarily disabled while Hugging Face moderation is unavailable.
+    // const ai_analysis = await checkContent(content);
+    // const aiScore: number = ai_analysis.find((item: { label: string; score: number }) => item.label === "toxic")?.score ?? 0;
+    // const aiVerdict: string = aiScore > 0.8 ? "Inappropriate Content" : "CLEAN";
+    const aiScore = 0;
+    const aiVerdict = "UNMODERATED";
 
     await prisma.post.create({
         data: { content, userid: userId, threadId: thread.id, aiVerdict, aiScore }
     });
 
-    if (aiScore > 0.8) {
-        await prisma.report.create({
-            data: {
-                threadId: thread.id,
-                isAIGenerated: true,
-                reason: "AI flagged as inappropriate content",
-                aiVerdict,
-                aiScore
-            }
-        });
-    }
+    // if (aiScore > 0.8) {
+    //     await prisma.report.create({
+    //         data: {
+    //             threadId: thread.id,
+    //             isAIGenerated: true,
+    //             reason: "AI flagged as inappropriate content",
+    //             aiVerdict,
+    //             aiScore
+    //         }
+    //     });
+    // }
 
     if (tags) {
         for (const tagName of tags) {

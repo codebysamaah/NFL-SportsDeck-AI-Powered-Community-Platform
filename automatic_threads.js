@@ -1,8 +1,19 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+const THREAD_SEED_CACHE_KEY = "automatic-threads";
+const THREAD_SEED_INTERVAL_MS = 24 * 60 * 60 * 1000;
+
 export async function automatic_threads() {
     const now = new Date();
+    const lastRun = await prisma.cacheStatus.findUnique({
+        where: { key: THREAD_SEED_CACHE_KEY },
+        select: { lastUpdatedAt: true },
+    });
+
+    if (lastRun && now.getTime() - lastRun.lastUpdatedAt.getTime() < THREAD_SEED_INTERVAL_MS) {
+        return false;
+    }
 
     const res1 = await fetch(
         "https://api.football-data.org/v4/competitions/DED/matches",
@@ -15,8 +26,7 @@ export async function automatic_threads() {
     );
 
     if (!res1.ok) {
-       console.error("Failed to fetch matches from football-data API");
-       return;
+       throw new Error(`Failed to fetch matches from football-data API (${res1.status})`);
     }
 
     const data1 = await res1.json();
@@ -115,9 +125,11 @@ export async function automatic_threads() {
                 where: { matchId: dbMatch?.id },
             });
 
-            if (dbMatch && !existingThread){
-                const thread = await prisma.thread.create({
-                    data: {
+            if (dbMatch && !existingThread) {
+                const thread = await prisma.thread.upsert({
+                    where: { matchId: dbMatch.id },
+                    update: {},
+                    create: {
                         matchId: dbMatch.id,
                         title: `Discussion: ${match.homeTeam.name} vs ${match.awayTeam.name}`,
                     },
@@ -143,5 +155,14 @@ export async function automatic_threads() {
                 });
             }
         }
+
+        const completedAt = new Date();
+        await prisma.cacheStatus.upsert({
+            where: { key: THREAD_SEED_CACHE_KEY },
+            update: { lastUpdatedAt: completedAt },
+            create: { key: THREAD_SEED_CACHE_KEY, lastUpdatedAt: completedAt },
+        });
+
+        return true;
     }
 }

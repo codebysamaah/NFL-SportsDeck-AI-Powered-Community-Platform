@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import jwt from "jsonwebtoken";
-import { checkContent } from "@/utils/flagContent";
+// import { checkContent } from "@/utils/flagContent";
 import { processMatchSentiment } from "@/utils/match_sentiment";
 
 // Browse posts inside threadId 
@@ -99,9 +99,11 @@ export async function POST(request, context){
         return NextResponse.json({ error: "Content is required" }, { status: 400 });
     }
 
-    const ai_analysis = await checkContent(content);
-    const aiScore = ai_analysis.find(item => item.label === "toxic").score;
-    const aiVerdict = aiScore > 0.8 ? "Inappropriate Content" : "CLEAN";
+    // const ai_analysis = await checkContent(content);
+    // const aiScore = ai_analysis.find(item => item.label === "toxic").score;
+    // const aiVerdict = aiScore > 0.8 ? "Inappropriate Content" : "CLEAN";
+    const aiScore = 0;
+    const aiVerdict = "UNMODERATED";
 
     const post = await prisma.post.create({
         data: {
@@ -122,16 +124,16 @@ export async function POST(request, context){
         });
     }
 
-    if (aiScore > 0.8) {
-        await prisma.report.create({
-            data: {
-                postId: post.id,
-                isAIGenerated: true,
-                reason: "AI flagged as inappropriate content",
-                aiVerdict: aiVerdict,
-                aiScore: aiScore
-            }
-        });
-    }
+    // if (aiScore > 0.8) {
+    //     await prisma.report.create({
+    //         data: {
+    //             postId: post.id,
+    //             isAIGenerated: true,
+    //             reason: "AI flagged as inappropriate content",
+    //             aiVerdict: aiVerdict,
+    //             aiScore: aiScore
+    //         }
+    //     });
+    // }
     return NextResponse.json(post);
 }

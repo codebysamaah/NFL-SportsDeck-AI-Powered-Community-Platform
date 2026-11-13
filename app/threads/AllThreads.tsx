@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 interface Post {
     id: number,
@@ -189,7 +190,7 @@ function Pagination({ page, totalPages, onChange }: { page: number; totalPages: 
 
 function CreateThread({ onClose, onSaved }: { onClose: () => void; onSaved: () => void}) {
     const [error, setError] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -219,7 +220,7 @@ function CreateThread({ onClose, onSaved }: { onClose: () => void; onSaved: () =
             }
             onSaved();
             onClose();
-        } catch (err) {
+        } catch {
             setError("Something went wrong.");
         } finally {
             setLoading(false);
@@ -301,9 +302,6 @@ export default function ThreadsPage(){
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const rawPage = Number(searchParams.get("page") ?? 1);
-    const [page, setPage] = useState(Math.max(1, rawPage));
-
     const [threads, setThreads] = useState<Thread[]>([]);
     const [total, setTotal] = useState(0);
     const [error, setError] = useState<string | null>(null);
@@ -316,8 +314,14 @@ export default function ThreadsPage(){
     const [searchTeamId, setSearchTeamId] = useState(searchParams.get("team") ?? "");
     const [searchMatchId, setSearchMatchId] = useState(searchParams.get("match") ?? "");
     const [showCreate, setShowCreate] = useState(false);
+    const seedRequest = useRef<Promise<void> | null>(null);
     
     const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    const requestedPage = Number(searchParams.get("page") ?? 1);
+    const page = Math.min(
+        Number.isFinite(requestedPage) ? Math.max(1, Math.floor(requestedPage)) : 1,
+        totalPages
+    );
  
     const updateUrl = (newPage: number) => {
         const params = new URLSearchParams();
@@ -332,8 +336,27 @@ export default function ThreadsPage(){
         router.push(`?${params.toString()}`);
     };
 
-    const fetchThreads = async () => {
+    const seedDefaultThreads = useCallback(() => {
+        if (!seedRequest.current) {
+            seedRequest.current = fetch("/api/seed")
+                .then(async (res) => {
+                    const data = await res.json();
+                    if (!res.ok) {
+                        throw new Error(data.error ?? "Failed to seed default discussion threads.");
+                    }
+                })
+                .catch((error) => {
+                    seedRequest.current = null;
+                    throw error;
+                });
+        }
+
+        return seedRequest.current;
+    }, []);
+
+    const fetchThreads = useCallback(async () => {
         try {
+            await seedDefaultThreads();
             setLoading(true);
             setError(null);
 
@@ -356,15 +379,14 @@ export default function ThreadsPage(){
             setThreads(data.threads ?? []);
             setTotal(data.total ?? 0);
         } catch (e) {
-            setError("Failed to load matches. Please try again.");
+            setError(e instanceof Error ? e.message : "Failed to load discussion threads.");
         } finally {
             setLoading(false);
         }
-    }
+    }, [page, searchAuthor, searchMatchId, searchTag, searchTeamId, searchTitle, seedDefaultThreads]);
  
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setPage(1);
         updateUrl(1);
     };
 
@@ -374,19 +396,16 @@ export default function ThreadsPage(){
         setSearchTag("");
         setSearchTeamId("");
         setSearchMatchId("");
-        setPage(1);
         router.push(`?page=1`);
     };
 
     useEffect(() => {
-        fetchThreads();
-    }, [searchTitle, searchAuthor, searchTag, searchTeamId, searchMatchId, page]);
-    
-    useEffect(() => {
-        if (total === 0) return;
-        if (rawPage <= 0) setPage(1);
-        else if (rawPage > totalPages) setPage(totalPages);
-    }, [total, rawPage, totalPages]);
+        const timer = setTimeout(() => {
+            void fetchThreads();
+        }, 0);
+
+        return () => clearTimeout(timer);
+    }, [fetchThreads]);
 
     useEffect(() => {
         if (!error) return;
@@ -402,7 +421,6 @@ export default function ThreadsPage(){
 
     const handlePageChange = (p: number) => {
         if (p < 1 || p > totalPages) return;
-        setPage(p);
         updateUrl(p)
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
@@ -411,8 +429,16 @@ export default function ThreadsPage(){
     const end = Math.min(page * PAGE_SIZE, total);
 
     return (
-        <div className="relative min-h-screen text-[var(--text-primary)] flex flex-col">
-            <img src="/images/details-ball-sport.jpg" className="fixed inset-0 w-full h-full object-cover -z-10" />
+        <div className="relative isolate min-h-screen text-[var(--text-primary)] flex flex-col">
+            <div aria-hidden="true" className="fixed inset-0 -z-10">
+                <Image
+                    src="/images/details-ball-sport.jpg"
+                    alt=""
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                />
+            </div>
             <div className="fixed inset-0 bg-black/70 -z-10" />
 
             {/* Header */}
